@@ -29,6 +29,7 @@ python3 shyonvif_set_ip.py admin 12345 80 192.168.1.13 192.168.1.12
 
 ### shyonvif_get_links.py
 **Params:** login password port old_ip new_ip 
+
 **Ex.:** 
 
 ```
@@ -41,5 +42,8 @@ python3 shyonvif_get_links.py admin 12345 80 192.168.1.12
 {"low": "rtsp://192.168.1.12:554/live/sub", "high": "rtsp://192.168.1.12:554/live/main"}
 ```
 
-#### Keep in mind
+**Keep in mind,** if the program fails to get a low link, the output will be about this:
 
+```
+{"low": "", "high": "rtsp://192.168.1.12:554/live/main"}
+```
