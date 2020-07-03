@@ -1,7 +1,11 @@
+# Basic on (shyonvif)[https://github.com/tminei/shyonvif/]
+
+
 # How to use:
 
 ### shyonvif_get_cams_as_json.py 
 **Params:** without any params
+
 **Ex.:**
 
 ```
@@ -22,5 +26,21 @@ python3 shyonvif_get_cams_as_json.py
 python3 shyonvif_set_ip.py admin 12345 80 192.168.1.13 192.168.1.12
 ```
 
-**Ex. output:** no output
+**Ex. output:** without output
+
+### shyonvif_get_links.py
+**Params:** login password port old_ip new_ip 
+**Ex.:** 
+
+```
+python3 shyonvif_get_links.py admin 12345 80 192.168.1.12
+```
+
+**Ex. output:** 
+
+```
+{"low": "rtsp://192.168.1.12:554/live/sub", "high": "rtsp://192.168.1.12:554/live/main"}
+```
+
+#### Keep in mind
 
