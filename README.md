@@ -1,5 +1,4 @@
-# Basic on (shyonvif)[https://github.com/tminei/shyonvif/]
-
+# Using this library [shyonvif](https://github.com/tminei/shyonvif/)
 
 # How to use:
 
