@@ -45,5 +45,5 @@ python3 shyonvif_get_links.py admin 12345 80 192.168.1.12
 **Keep in mind,** if the program fails to get a low link, the output will be about this:
 
 ```
-{"low": "", "high": "rtsp://192.168.1.12:554/live/main"}
+{"low": "NaN", "high": "rtsp://192.168.1.12:554/live/main"}
 ```
