@@ -1,4 +1,4 @@
-# Based on library [shyonvif](https://github.com/tminei/shyonvif/)
+# Based on [shyonvif](https://github.com/tminei/shyonvif/) library
 
 # How to use:
 
