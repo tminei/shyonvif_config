@@ -54,7 +54,6 @@ class onvif():
             return response
 
     def sendSoapMsg(self, bmsg):
-        print(bmsg)
         body = messages._SOAP_BODY.format(content=bmsg, **nsmap)
         hdrs = {}
         if self.login and self.password:
@@ -71,10 +70,10 @@ class onvif():
         try:
             self.connection.request("POST", self.path, soapmsg, headers=hdrs)
         except ConnectionRefusedError:
-            print("cannot connect")
+            if self.debug:
+                print("cannot connect")
             return None
         resp = self.connection.getresponse()
-        print(resp.read())
         if resp.status != 200:
             print(resp.status, resp.reason)
         else:
