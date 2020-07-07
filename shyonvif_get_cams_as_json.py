@@ -41,8 +41,15 @@ def check_info(ipList):
                         infoList.append([i, j, str(raw[raw.find("Manufacturer") + 13:raw.find("</tds:Manufacturer>")]),
                                          str(raw[raw.find("SerialNumber") + 13:raw.find("</tds:SerialNumber>")])])
                 except:
-                    pass
+                    try:
+                        mycam.close()
+                    except:
+                        pass
                 break
+    try:
+        mycam.close()
+    except:
+        pass
     return infoList
 
 def get_manufactured(info):
