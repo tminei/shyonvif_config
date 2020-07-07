@@ -54,6 +54,9 @@ class onvif():
             response = self.sendSoapMsg(result)
             return response
 
+    def close(self):
+        self.connection.close()
+
     def sendSoapMsg(self, bmsg):
         body = messages._SOAP_BODY.format(content=bmsg, **nsmap)
         hdrs = {}
