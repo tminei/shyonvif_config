@@ -40,7 +40,7 @@ class onvif():
             if self.debug:
                 print("Password is not listed.")
             exit(1)
-        self.connection = http.client.HTTPConnection(addr, port=port)
+        self.connection = http.client.HTTPConnection(addr, port=port, timeout=2)
 
     def execute(self, command, **parms):
         tmpl = getattr(messages, command)
@@ -69,19 +69,40 @@ class onvif():
                 body = self.getAuthHeader() + body
         soapmsg = messages._SOAP_ENV.format(content=body, **nsmap)
         if not self.connection:
-            self.connection = http.client.HTTPConnection(self.address)
+            self.connection = http.client.HTTPConnection(self.address, timeout=1)
 
         try:
             self.connection.request("POST", self.path, soapmsg, headers=hdrs)
         except ConnectionRefusedError:
             if self.debug:
                 print("cannot connect")
+                self.connection.close()
             return None
         resp = self.connection.getresponse()
         if resp.status != 200:
             print(resp.status, resp.reason)
+            self.connection.close()
         else:
-            return resp.read()
+            ret = resp.read()
+            self.connection.close()
+            return ret
+
+    # def getInfo(self, device_url):
+    #     try:
+    #         session = requests.session()
+    #         session.auth = HTTPBasicAuth(self.login, self.password)
+    #     except:
+    #         return 1
+    #     msg = """<s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope"><s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><GetScopes xmlns="http://www.onvif.org/ver10/device/wsdl"/></s:Body></s:Envelope>"""
+    #     try:
+    #         req = session.post(device_url, msg, timeout=3)
+    #         print(req)
+    #         session.close()
+    #     except:
+    #         session.close()
+    #         return 0
+    #
+    #     return 0
 
     def setIP(self, new_ip):
         old_ip = "{}:{}".format(self.addr, self.port)
@@ -94,7 +115,7 @@ class onvif():
         try:
             session.post(url,
                          """<soap-env:Envelope xmlns:soap-env="http://www.w3.org/2003/05/soap-envelope"><soap-env:Header><wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"><wsse:UsernameToken><wsse:Username>admin</wsse:Username><wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordDigest">CzpsHdK4C3CKxehbfk2x1XJIxMs=</wsse:Password><wsse:Nonce EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary">tI9OGF5NaBjX7mahNpvwvg==</wsse:Nonce><wsu:Created xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">2020-07-03T08:43:25+00:00</wsu:Created></wsse:UsernameToken></wsse:Security></soap-env:Header><soap-env:Body><ns0:SetNetworkInterfaces xmlns:ns0="http://www.onvif.org/ver10/device/wsdl"><ns0:InterfaceToken>eth0</ns0:InterfaceToken><ns0:NetworkInterface><ns1:IPv4 xmlns:ns1="http://www.onvif.org/ver10/schema"><ns1:Enabled>true</ns1:Enabled><ns1:Manual><ns1:Address>{}</ns1:Address><ns1:PrefixLength>24</ns1:PrefixLength></ns1:Manual><ns1:DHCP>false</ns1:DHCP></ns1:IPv4></ns0:NetworkInterface></ns0:SetNetworkInterfaces></soap-env:Body></soap-env:Envelope>""".format(
-                             str(new_ip)), timeout=3)
+                             str(new_ip)), timeout=2)
         except:
             session.close()
             return 0
