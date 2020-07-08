@@ -62,7 +62,7 @@ for i in adrArr:
             # DAHUA
             ip = str(i)
             ip = ip[ip.find("//") + 2:]
-            port = ip[ip.find(":") + 1:ip.find("/")]
+            port = "80"
             ip = ip[:ip.find("/")]
             mycam = shyonvif.onvif(addr=ip, port='80', usr='admin', pwd="admin1234")
             raw = mycam.execute("GET_DEVICE_INFO").decode()
